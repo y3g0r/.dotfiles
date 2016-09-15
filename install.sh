@@ -1,1 +1,1 @@
-ln -sv "~/.dotfiles/.vimrc" ~
+ln -sv "$HOME/.dotfiles/.vimrc" $HOME
