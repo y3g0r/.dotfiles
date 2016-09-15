@@ -41,7 +41,7 @@ set wildmenu                    " visual autocomplete for command menu
 set lazyredraw                  " redraw only when we need to
 set showmatch                   " show matching part of the pair for [] {} ()
 filetype indent on              " load filetype-specific indent files
-colors zenburn
+silent! colors zenburn
 " }}}
 
 " Searching {{{
