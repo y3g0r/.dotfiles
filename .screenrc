@@ -1,0 +1,67 @@
+# ~/.screenrc
+
+shell $SHELL
+term screen-256color
+
+# scrollback
+defscrollback 10000
+
+# New windows start at 11
+bind c screen 11
+
+# Create initial windows
+screen -t home 0
+# screen -t /etc 2 bash -c "cd /etc; bash"
+
+# Set the caption on the bottom line:
+# from http://diveintomark.org/public/2007/03/screenrc
+caption always "%{= kw}%-w%{= BW}%n %t%{-}%+w %-= %1`"
+
+# use regular audible bell and don't tell me when bells happen in other windows
+vbell off
+bell_msg ""
+
+# skip intro
+startup_message off
+
+# detach on disconnect
+autodetach on
+
+# make search case-insensitive
+ignorecase on
+
+# bindings
+bind p screen python 1
+bindkey -t "`10" select 10
+bindkey -t "`11" select 11
+bindkey -t "`12" select 12
+bindkey -t "`13" select 13
+bindkey -t "`14" select 14
+bindkey -t "`15" select 15
+bindkey -t "`16" select 16
+bindkey -t "`17" select 17
+bindkey -t "`18" select 18
+bindkey -t "`19" select 19
+# bindkey "^B" select
+
+# C-g  quit command mode
+bind ^g fit
+
+# C-g and other keys quit copy mode.
+markkeys \033=\015=^G
+
+# set the second mark, write to the screen-exchange
+# file, and use xsel to synchronize the paste buffer
+# with the X selection.
+# from http://snarfed.org/synchronizing_gnu_screens_paste_buffer_and_the_x_selection
+# http://snarfed.org/dotfiles/.screenrc
+bindkey -m "^ " eval "stuff ' '" writebuf "exec sh -c 'xsel -i < /tmp/screen-exchange'"
+
+# # special hack for C-e, since it should go *past* the last char.
+# bindkey -m ^e stuff "\$l"
+
+# use backtick for prefix key instead of Ctrl-A
+# escape ``
+
+# so it won't seem like there is a delay when entering copy mode
+msgminwait 0
