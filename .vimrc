@@ -82,6 +82,10 @@ imap <C-S-Right> <ESC>:tabn<CR>
 map <C-S-Left> :tabp<CR>
 imap <C-S-Left> <ESC>:tabp<CR>
 
+set scrolloff=4
+set ttyfast         " always use a fast terminal
+set cursorline      " underline the current line, for quick orientation
+
 " navigate windows
 map <C-j> <C-w>j
 map <C-k> <C-w>k
@@ -103,6 +107,9 @@ nnoremap <space> za
 " move vertically by visual line
 nnoremap j gj
 nnoremap k gk
+" Speed up scrolling of the viewport slightly
+nnoremap <C-e> 2<C-e>
+nnoremap <C-y> 2<C-y>
 " move to beginning/end of line
 nnoremap B ^
 nnoremap E $
