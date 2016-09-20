@@ -10,12 +10,12 @@ defscrollback 10000
 bind c screen 11
 
 # Create initial windows
-screen -t home 0
+screen -t home 10
 # screen -t /etc 2 bash -c "cd /etc; bash"
 
 # Set the caption on the bottom line:
 # from http://diveintomark.org/public/2007/03/screenrc
-caption always "%{= kw}%-w%{= BW}%n %t%{-}%+w %-= %1`"
+caption always "%{= kw}%-w%{= BW}%n %t%{-}%+w %-= %1` %{B}[%{W}%Y-%m-%d %c%{B}]"
 
 # use regular audible bell and don't tell me when bells happen in other windows
 vbell off
@@ -31,7 +31,6 @@ autodetach on
 ignorecase on
 
 # bindings
-bind p screen python 1
 bindkey -t "`10" select 10
 bindkey -t "`11" select 11
 bindkey -t "`12" select 12
