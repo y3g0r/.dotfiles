@@ -55,6 +55,7 @@ set encoding=utf-8              " encoding is utf-8
 set fileencoding=utf-8
 set fileformat=unix             " set unix line endings
 set fileformats=unix,dos
+set tenc=utf8
 " }}}
 
 " Whitespaces & Indentation {{{
