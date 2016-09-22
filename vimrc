@@ -18,7 +18,7 @@ Plugin 'majutsushi/tagbar'              " browse the tags of the current file
 Plugin 'scrooloose/nerdtree'            " explore your filesystem and to open files and directories
 Plugin 'scrooloose/nerdcommenter'       " comment your code 'sexy'
 Plugin 'fholgado/minibufexpl.vim'       " buffer tabbed manager
-Plugin 'Valloric/YouCompleteMe'         " code-completion engine for Vim
+" Plugin 'Valloric/YouCompleteMe'         " code-completion engine for Vim
 " Plugin 'ggreer/the_silver_searcher'     " fast code search tool like ack
 Plugin 'klen/python-mode'
 " Plugin 'terryma/vim-multiple-cursors'   " true Sublime Text style multiple selections for Vim
@@ -41,6 +41,7 @@ set wildmenu                    " visual autocomplete for command menu
 set lazyredraw                  " redraw only when we need to
 set showmatch                   " show matching part of the pair for [] {} ()
 filetype indent on              " load filetype-specific indent files
+set pastetoggle=<F2>            " toggle paste mode by pressing F2
 silent! colors zenburn
 " }}}
 
@@ -92,6 +93,16 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 map <C-h> <C-w>h
+
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set relativenumber!
+  else
+    set relativenumber
+  endif
+endfunc
+
+nnoremap <C-n> :call NumberToggle()<cr>
 " }}}
 
 " Bindings {{{
@@ -99,7 +110,7 @@ let mapleader=','
 " map <ESC> to jk
 inoremap jk <esc>
 " remove search results highlight
-nnoremap <leader><space> :noh<CR>i
+nnoremap <leader><space> :noh<CR>
 " toggle line numbers on/off
 noremap <F3> :set invnumber<CR>
 inoremap <F3> <C-O>:set invnumber<CR>
@@ -123,6 +134,7 @@ nnoremap gV `[v`]
 nnoremap <leader>u :GundoToggle<CR>
 nnoremap <leader>tb :TagbarToggle<CR>
 nnoremap <leader>t :NERDTreeToggle<CR>
+nnoremap <leader>m :MBEToggle<CR>
 " edit vimrc/zshrc and load vimrc bindings
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
 nnoremap <leader>ez :vsp ~/.zshrc<CR>
@@ -137,10 +149,13 @@ vnoremap < <gv
 vnoremap > >gv
 " save session - reopen it with `vim -S`
 nnoremap <leader>s :mksession<CR>
+nnoremap <leader>ss :mksession!<CR>
 " open ag.vim
 nnoremap <leader>a :Ag
 " destroy buffer
 " map <C-d> :bd<CR>
+" locate current tag in tagbar
+map <leader>c :TagbarCurrentTag<CR>
 " }}}
 
 " Folding {{{
@@ -156,6 +171,11 @@ set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
+" }}}
+
+" NERDTree plugin {{{
+let NERDTreeIgnore = ['\.pyc$']
+map <leader>f :NERDTreeFind<cr>
 " }}}
 
 " Airline plugin {{{
@@ -188,7 +208,17 @@ let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_switch_buffer = 0
 let g:ctrlp_working_path_mode = 0
 " speed up CtrlP with Ag
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
 " }}}
 
 " Python-Mode plugin {{{
@@ -233,5 +263,26 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 let g:pymode_folding = 0
 " }}}
 
+" Cscope {{{
+" see :help cscope
+if has("cscope")
+    set csprg=/usr/local/bin/cscope
+    set csto=0
+    " set cst
+    set nocsverb
+    " add any database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out
+        " else add database pointed to by environment
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+    set csverb
+endif
+
+map <C-_> :cstag <C-R>=expand("<cword>")<CR><CR>
+" }}}
+
 " setup folding for .vimrc
 " vim:foldmethod=marker:foldlevel=0
+
