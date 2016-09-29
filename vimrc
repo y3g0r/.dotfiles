@@ -122,6 +122,8 @@ nnoremap k gk
 " Speed up scrolling of the viewport slightly
 nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>
+nnoremap <C-d> 10<C-e>
+nnoremap <C-u> 10<C-y>
 " move to beginning/end of line
 nnoremap B ^
 nnoremap E $
@@ -153,7 +155,7 @@ nnoremap <leader>ss :mksession!<CR>
 " open ag.vim
 nnoremap <leader>a :Ag
 " destroy buffer
-" map <C-d> :bd<CR>
+nnoremap <C-c> :bp\|bd #<CR>
 " locate current tag in tagbar
 map <leader>c :TagbarCurrentTag<CR>
 " }}}
