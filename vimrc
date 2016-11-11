@@ -9,7 +9,7 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'jnurmine/Zenburn'                        " nice theme
+Plugin 'jnurmine/Zenburn'               " nice theme
 Plugin 'bling/vim-airline'              " powerline fork
 Plugin 'ctrlpvim/ctrlp.vim'             " full path fuzzy finder
 Plugin 'sjl/gundo.vim'                  " visualize your Vim undo tree
@@ -19,9 +19,11 @@ Plugin 'scrooloose/nerdtree'            " explore your filesystem and to open fi
 Plugin 'scrooloose/nerdcommenter'       " comment your code 'sexy'
 Plugin 'fholgado/minibufexpl.vim'       " buffer tabbed manager
 " Plugin 'Valloric/YouCompleteMe'         " code-completion engine for Vim
-" Plugin 'ggreer/the_silver_searcher'     " fast code search tool like ack
-Plugin 'klen/python-mode'
-" Plugin 'terryma/vim-multiple-cursors'   " true Sublime Text style multiple selections for Vim
+Plugin 'rking/ag.vim'                   " Vim plugin for the_silver_searcher, 'ag', a replacement for the Perl module / CLI script 'ack'
+"Plugin 'klen/python-mode'
+Plugin 'tmhedberg/SimpylFold'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'chrisbra/vim-diff-enhanced'
 
 " All of your Plugins must be added before the following line
 " next 2 lines are required by Vaundle
@@ -158,13 +160,20 @@ nnoremap <leader>a :Ag
 nnoremap <C-c> :bp\|bd #<CR>
 " locate current tag in tagbar
 map <leader>c :TagbarCurrentTag<CR>
+" copy current file name (relative/absolute) to system clipboard
+if has("mac") || has("gui_macvim") || has("gui_mac")
+	nnoremap <leader>fn :let @*=expand("%").":".line(".")<CR>
+endif
+if has("gui_gtk") || has("gui_gtk2") || has("gui_gnome") || has("unix")
+	nnoremap <leader>fn :let @+=expand("%").":".line(".")<CR>
+endif
 " }}}
 
 " Folding {{{
 set foldenable                  " enable folding
 set foldlevelstart=10           " open most folds by default
 set foldnestmax=10              " 10 nested fold max
-set foldmethod=indent           " fold based on indent level
+"set foldmethod=indent           " fold based on indent level
 " }}}
 
 " Vim file backup {{{
@@ -279,10 +288,15 @@ if has("cscope")
     elseif $CSCOPE_DB != ""
         cs add $CSCOPE_DB
     endif
+    if filereadable("pycscope.out")
+        cs add pycscope.out
+    endif
     set csverb
 endif
 
 map <C-_> :cstag <C-R>=expand("<cword>")<CR><CR>
+map g<C-]> :cs find 3 <C-R>=expand("<cword>")<CR><CR>
+map g<C-\> :cs find 0 <C-R>=expand("<cword>")<CR><CR>
 " }}}
 
 " setup folding for .vimrc
