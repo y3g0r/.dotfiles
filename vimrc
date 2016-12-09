@@ -15,16 +15,17 @@ Plugin 'bling/vim-airline'              " powerline fork
 Plugin 'ctrlpvim/ctrlp.vim'             " full path fuzzy finder
 Plugin 'sjl/gundo.vim'                  " visualize your Vim undo tree
 Plugin 'majutsushi/tagbar'              " browse the tags of the current file
-" Plugin 'mhinz/vim-signify'              " indicate added, modified and removed lines based on VCS
+Plugin 'mhinz/vim-signify'              " indicate added, modified and removed lines based on VCS
 Plugin 'scrooloose/nerdtree'            " explore your filesystem and to open files and directories
 Plugin 'scrooloose/nerdcommenter'       " comment your code 'sexy'
 Plugin 'fholgado/minibufexpl.vim'       " buffer tabbed manager
 " Plugin 'Valloric/YouCompleteMe'         " code-completion engine for Vim
 Plugin 'rking/ag.vim'                   " Vim plugin for the_silver_searcher, 'ag', a replacement for the Perl module / CLI script 'ack'
-"Plugin 'klen/python-mode'
+Plugin 'klen/python-mode'
 Plugin 'tmhedberg/SimpylFold'
-Plugin 'davidhalter/jedi-vim'
+"Plugin 'davidhalter/jedi-vim'
 Plugin 'chrisbra/vim-diff-enhanced'
+Plugin 'ntpeters/vim-better-whitespace' " Better whitespace highlighting for Vim
 
 " All of your Plugins must be added before the following line
 " next 2 lines are required by Vaundle
@@ -156,7 +157,7 @@ vnoremap > >gv
 nnoremap <leader>s :mksession<CR>
 nnoremap <leader>ss :mksession!<CR>
 " open ag.vim
-nnoremap <leader>a :Ag
+nnoremap <leader>a :Ag 
 " destroy buffer
 nnoremap <C-c> :bp\|bd #<CR>
 " locate current tag in tagbar
@@ -166,7 +167,8 @@ if has("mac") || has("gui_macvim") || has("gui_mac")
 	nnoremap <leader>fn :let @*=expand("%").":".line(".")<CR>
 endif
 if has("gui_gtk") || has("gui_gtk2") || has("gui_gnome") || has("unix")
-	nnoremap <leader>fn :let @+=expand("%").":".line(".")<CR>
+	nnoremap <leader>fn :let @"="\n".expand("%").":".line(".")<CR>
+	nnoremap <leader>sn :let @"="\n".expand("%").tagbar#currenttag(' %s ','', 's').":".line(".")<CR>
 endif
 " }}}
 
@@ -254,9 +256,9 @@ let g:pymode_doc_key = 'K'
 
 " Linting
 let g:pymode_lint = 1
-let g:pymode_lint_checker = "pyflakes,pep8"
+let g:pymode_lint_checker = "pylint,pyflakes,pep8"
 " Auto check on save
-let g:pymode_lint_write = 1
+let g:pymode_lint_on_write = 0
 
 " Support virtualenv
 let g:pymode_virtualenv = 1
@@ -264,6 +266,7 @@ let g:pymode_virtualenv = 1
 " Enable breakpoints plugin
 let g:pymode_breakpoint = 1
 let g:pymode_breakpoint_bind = '<leader>b'
+let g:pymode_breakpoint_cmd = 'from pudb import set_trace; set_trace()'
 
 " syntax highlighting
 let g:pymode_syntax = 1
@@ -298,6 +301,24 @@ endif
 map <C-_> :cstag <C-R>=expand("<cword>")<CR><CR>
 map g<C-]> :cs find 3 <C-R>=expand("<cword>")<CR><CR>
 map g<C-\> :cs find 0 <C-R>=expand("<cword>")<CR><CR>
+" }}}
+
+" Ag.vim {{{
+" ignore cscope and pycscope
+let g:ag_prg="ag --column --nogroup --noheading --ignore=./pycscope.out --ignore=./cscope.out"
+" }}}
+
+" Signify {{{
+let g:signify_vcs_list = [ 'git', 'perforce' ]
+let g:signify_line_highlight = 0
+
+nnoremap <leader>gt :SignifyToggle<CR>
+nnoremap <leader>gh :SignifyToggleHighlight<CR>
+nnoremap <leader>gr :SignifyRefresh<CR>
+
+" hunk jumping
+nmap <leader>gj <plug>(signify-next-hunk)
+nmap <leader>gk <plug>(signify-prev-hunk)
 " }}}
 
 " setup folding for .vimrc
