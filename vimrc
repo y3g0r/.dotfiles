@@ -19,13 +19,11 @@ Plugin 'mhinz/vim-signify'              " indicate added, modified and removed l
 Plugin 'scrooloose/nerdtree'            " explore your filesystem and to open files and directories
 Plugin 'scrooloose/nerdcommenter'       " comment your code 'sexy'
 Plugin 'fholgado/minibufexpl.vim'       " buffer tabbed manager
-" Plugin 'Valloric/YouCompleteMe'         " code-completion engine for Vim
 Plugin 'rking/ag.vim'                   " Vim plugin for the_silver_searcher, 'ag', a replacement for the Perl module / CLI script 'ack'
 Plugin 'klen/python-mode'
 Plugin 'tmhedberg/SimpylFold'
-"Plugin 'davidhalter/jedi-vim'
 Plugin 'chrisbra/vim-diff-enhanced'
-Plugin 'ntpeters/vim-better-whitespace' " Better whitespace highlighting for Vim
+Plugin 'vim-scripts/cream-showinvisibles' " Toggle view of invisible tabs, returns, trailing spaces 
 
 " All of your Plugins must be added before the following line
 " next 2 lines are required by Vaundle
@@ -207,7 +205,8 @@ noremap <C-S-TAB> :MBEbp<CR>
 " }}}
 
 " Signify plugin {{{
-let g:signify_vcs_list = [ 'git', 'hg' ]
+let g:signify_vcs_list = [ 'git', 'perforce' ]
+let g:signify_line_highlight = 0
 " nicer colors
 highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
 highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
@@ -215,6 +214,14 @@ highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
 highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
 highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
 highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
+" bindings
+nnoremap <leader>gt :SignifyToggle<CR>
+nnoremap <leader>gh :SignifyToggleHighlight<CR>
+nnoremap <leader>gr :SignifyRefresh<CR>
+
+" hunk jumping
+nmap <leader>gj <plug>(signify-next-hunk)
+nmap <leader>gk <plug>(signify-prev-hunk)
 " }}}
 
 " CtrlP plugin {{{
@@ -308,17 +315,18 @@ map g<C-\> :cs find 0 <C-R>=expand("<cword>")<CR><CR>
 let g:ag_prg="ag --column --nogroup --noheading --ignore=./pycscope.out --ignore=./cscope.out"
 " }}}
 
-" Signify {{{
-let g:signify_vcs_list = [ 'git', 'perforce' ]
-let g:signify_line_highlight = 0
+" Cream show invisibles plugin {{{
+if !exists("$CREAM")
 
-nnoremap <leader>gt :SignifyToggle<CR>
-nnoremap <leader>gh :SignifyToggleHighlight<CR>
-nnoremap <leader>gr :SignifyRefresh<CR>
+	" mappings
+	imap <silent> <F5> <C-o>:call Cream_list_toggle("i")<CR>
+	vmap <silent> <F5> :<C-u>call Cream_list_toggle("v")<CR>
+	nmap <silent> <F5>      :call Cream_list_toggle("n")<CR>
 
-" hunk jumping
-nmap <leader>gj <plug>(signify-next-hunk)
-nmap <leader>gk <plug>(signify-prev-hunk)
+	" initialize on Buffer enter/new
+	autocmd BufNewFile,BufEnter * call Cream_list_init()
+
+endif
 " }}}
 
 " setup folding for .vimrc
