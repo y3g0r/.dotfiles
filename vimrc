@@ -312,7 +312,7 @@ map g<C-\> :cs find 0 <C-R>=expand("<cword>")<CR><CR>
 
 " Ag.vim {{{
 " ignore cscope and pycscope
-let g:ag_prg="ag --column --nogroup --noheading --ignore=./pycscope.out --ignore=./cscope.out"
+let g:ag_prg="ag --column --nogroup --noheading --ignore='*cscope.out*'"
 " }}}
 
 " Cream show invisibles plugin {{{
