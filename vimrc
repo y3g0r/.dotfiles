@@ -15,12 +15,14 @@ Plugin 'bling/vim-airline'              " powerline fork
 Plugin 'ctrlpvim/ctrlp.vim'             " full path fuzzy finder
 Plugin 'sjl/gundo.vim'                  " visualize your Vim undo tree
 Plugin 'majutsushi/tagbar'              " browse the tags of the current file
-Plugin 'mhinz/vim-signify'              " indicate added, modified and removed lines based on VCS
+"Plugin 'mhinz/vim-signify'              " indicate added, modified and removed lines based on VCS
 Plugin 'scrooloose/nerdtree'            " explore your filesystem and to open files and directories
 Plugin 'scrooloose/nerdcommenter'       " comment your code 'sexy'
 Plugin 'fholgado/minibufexpl.vim'       " buffer tabbed manager
 Plugin 'rking/ag.vim'                   " Vim plugin for the_silver_searcher, 'ag', a replacement for the Perl module / CLI script 'ack'
-Plugin 'klen/python-mode'
+if !has('nvim')
+    Plugin 'klen/python-mode'
+endif
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'chrisbra/vim-diff-enhanced'
 Plugin 'vim-scripts/cream-showinvisibles' " Toggle view of invisible tabs, returns, trailing spaces 
