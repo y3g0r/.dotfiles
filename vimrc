@@ -23,6 +23,10 @@ Plugin 'rking/ag.vim'                   " Vim plugin for the_silver_searcher, 'a
 if !has('nvim')
     Plugin 'klen/python-mode'
 endif
+if has('nvim')
+    Plugin 'Shougo/deoplete.nvim'
+endif
+"Plugin 'davidhalter/jedi-vim'           " Using the jedi autocompletion library for VIM.
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'chrisbra/vim-diff-enhanced'
 Plugin 'vim-scripts/cream-showinvisibles' " Toggle view of invisible tabs, returns, trailing spaces 
@@ -331,6 +335,20 @@ if !exists("$CREAM")
 endif
 " }}}
 
+" Deoplete {{{
+if has('nvim')
+    let g:deoplete#enable_at_startup = 1
+	inoremap <silent><expr> <TAB>
+	\ pumvisible() ? "\<C-n>" :
+	\ <SID>check_back_space() ? "\<TAB>" :
+	\ deoplete#mappings#manual_complete()
+	function! s:check_back_space() abort "{{{
+	let col = col('.') - 1
+	return !col || getline('.')[col - 1]  =~ '\s'
+	endfunction"}}}
+
+endif
+" }}}
 " setup folding for .vimrc
 " vim:foldmethod=marker:foldlevel=0
 
