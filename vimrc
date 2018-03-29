@@ -351,4 +351,3 @@ endif
 " }}}
 " setup folding for .vimrc
 " vim:foldmethod=marker:foldlevel=0
-

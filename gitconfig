@@ -1,0 +1,13 @@
+[user]
+	name = Yegor Ivashchenko
+	email = yivashch@softserveinc.com
+[core]
+	autocrlf = input
+	safecrlf = true
+[alias]
+	co = checkout
+	ci = commit
+	st = status
+	br = branch
+	hist = log --oneline --graph --decorate --all
+	desc = describe
